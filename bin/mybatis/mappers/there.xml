@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="there">
+
+	<select id="selectThere"
+		parameterType="string" resultType="thereVO">
+		SELECT id, group_id, name, name_en, background, summary, timezone
+		  FROM tbl_there
+		 WHERE id = #{id}
+	</select>
+
+	<select id="selectLocation"
+		parameterType="string" resultType="locationVO">
+		SELECT lat, lng
+		  FROM tbl_location
+		 WHERE id = #{id}
+	</select>
+
+	<select id="selectInfos"
+		parameterType="string" resultType="infoVO">
+		SELECT title, value
+		  FROM tbl_info
+		 WHERE id = #{id}
+		 ORDER BY info_order
+	</select>
+
+	<select id="selectTraffics"
+		parameterType="string" resultType="trafficVO">
+		SELECT title, icon, contents
+		  FROM tbl_traffic
+		 WHERE id = #{id}
+		 ORDER BY traffic_order
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

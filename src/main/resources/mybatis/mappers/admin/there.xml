@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.there">
+	<!-- 이전 sql - 아프리카(새로운 그룹)는 안에 지역이 없어서 group에 포함되지 않는다.  -->
+	<!--          - tbl_there_group와 tbl_there의 교집합을 구하기 때문에 지역없으면 select 되지 않는다. -->
+	<!-- LEFT JOIN 추가- '⊃', WHERE -> ON 변경 -->
+	<select id="selectThereGroups" resultType="adminThereGroupVO">
+		SELECT g.id, g.name, g.update_dt, COUNT(t.group_id) there_count
+		  FROM tbl_there_group g LEFT JOIN tbl_there t
+		    ON g.id = t.group_id
+	     GROUP BY t.group_id
+	     ORDER BY group_order
+	</select>
+	
+	<!-- #{} 는 값으로 들어감 - America -> 'America' -->
+	<!-- ${} 는 문자열 그대로 들어감 America -> America ($별로 좋지 않음-?) -->
+	<update id="updataThereGroupOrder" parameterType="map">
+		UPDATE tbl_there_group
+		   SET group_order = group_order + (${order}), update_dt = NOW()
+		 WHERE id = #{id}		   
+	</update>
+	
+	<select id="selectThereGroup" parameterType="string" resultType="adminThereGroupVO">
+		SELECT id, name
+		  FROM tbl_there_group
+		 WHERE id = #{id}
+	</select>
+	
+	<update id="updateThereGroup" parameterType="adminThereGroupVO">
+		UPDATE tbl_there_group
+		   SET name = #{name}, update_dt = NOW()
+		 WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteThereGroup" parameterType="string">
+		DELETE
+		  FROM tbl_there_group
+		 WHERE id = #{id}
+	</delete>
+	<!-- select insert문 - 보통 여러게 insert할때 select로 긁어와서 넣는다. 한개 넣기도 물론 가능 -->
+	<insert id="insertThereGroup" parameterType="adminThereGroupVO">
+		INSERT INTO tbl_there_group
+			(id, name, group_order, update_dt)
+		SELECT #{id}, #{name}, MAX(group_order) + 1, NOW()
+			  FROM tbl_there_group
+	</insert>
+	
+	<select id="countThereGroupId" parameterType="string" resultType="int">
+		SELECT COUNT(id)
+		  FROM tbl_there_group
+		 WHERE id = #{id}
+	</select>
+	
+	<select id="selectTheres" parameterType="string" resultType="adminThereVO">
+		SELECT t.id, t.group_Id, t.name, t.summary, t.background, 
+				COUNT(distinct i.info_id) info_count,
+				COUNT(distinct tr.traffic_id) traffic_count
+		  FROM tbl_there t
+		  LEFT JOIN tbl_info i
+			ON t.id = i.id
+		  LEFT JOIN tbl_traffic tr
+			ON t.id = tr.id
+		 WHERE group_id = #{groupId}
+		 GROUP BY t.id
+		 ORDER BY name
+	</select>
+	
+	<select id="countThereId" parameterType="string" resultType="int">
+		SELECT COUNT(id)
+		  FROM tbl_there
+		 WHERE id = #{id}
+	</select>
+	
+	<update id="updateThere" parameterType="thereVO">
+		UPDATE tbl_there
+		   SET name = #{name},
+		   	   name_en = #{nameEn},
+		   	   background = #{background},
+		   	   timezone = #{timezone},
+		   	   summary = #{summary}
+		 WHERE id = #{id}
+	</update>
+	
+	<update id="replaceLocation" parameterType="thereVO">
+		REPLACE INTO tbl_location
+			(id, lat, lng)
+		VALUES
+			(#{id}, #{location.lat}, #{location.lng})
+	</update>
+	
+	<delete id="deleteInfos" parameterType="string">
+		DELETE
+		  FROM tbl_info
+		 WHERE id = #{id}
+	</delete>
+	
+	<insert id="insertInfos" parameterType="thereVO">
+		INSERT INTO tbl_info
+			(id, info_id, title, value, info_order)
+		VALUES
+		<foreach collection="areaInfo" item="info" index="index" separator=",">
+			(#{id}, #{index} + 1, #{info.title}, #{info.value}, #{index} + 1)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteTraffics" parameterType="string">
+		DELETE
+		  FROM tbl_traffic
+		 WHERE id = #{id}
+	</delete>
+	
+	<insert id="insertTraffics" parameterType="thereVO">
+		INSERT INTO tbl_traffic
+			(id, traffic_id, icon, title, contents, traffic_order)
+		VALUES
+		<foreach collection="traffics" item="traffic" index="index" separator=",">
+			(#{id}, #{index} + 1, #{traffic.icon}, #{traffic.title}, #{traffic.contents}, #{index} + 1)
+		</foreach>
+	</insert>
+	
+	<insert id="insertThere" parameterType="thereVO">
+		INSERT INTO tbl_there
+			(id, group_id, name, name_en, timezone, background, summary)
+		VALUES
+			(#{id}, #{groupId}, #{name}, #{nameEn}, #{timezone}, #{background}, #{summary})
+	</insert>
+
+	<delete id="deleteThere" parameterType="string">
+		DELETE
+		  FROM tbl_there
+		 WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteLocation" parameterType="string">
+		DELETE
+		  FROM tbl_location
+		 WHERE id = #{id}
+	</delete>
+	
+</mapper>

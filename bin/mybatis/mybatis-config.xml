@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	
+	<typeAliases> <!-- type 이름 기니까, 별칭으로 줄인다. -->
+		<typeAlias alias="trafficVO" type="com.hanbit.there.api.vo.TrafficVO"/>
+		<typeAlias alias="infoVO" type="com.hanbit.there.api.vo.InfoVO"/>
+		<typeAlias alias="locationVO" type="com.hanbit.there.api.vo.LocationVO"/>
+		<typeAlias alias="thereVO" type="com.hanbit.there.api.vo.ThereVO"/>
+		<typeAlias alias="fileVO" type="com.hanbit.there.api.vo.FileVO"/>
+		
+		<typeAlias alias="adminThereGroupVO" type="com.hanbit.there.api.admin.vo.AdminThereGroupVO"/>
+		<typeAlias alias="adminThereVO" type="com.hanbit.there.api.admin.vo.AdminThereVO"/>
+	</typeAliases><!-- type 안하면 저 긴걸 다써야됨 -->
+	
+	<!-- <environments> application.properties에 이미 입력해서 필요없음 삭제 -->
+	
+</configuration>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu">
+
+	<select id="selectMenu" resultType="map">
+		SELECT g.name group_name, t.id, t.name
+		  FROM tbl_there_group g, tbl_there t
+		 WHERE g.id = t.group_id
+		 ORDER BY group_order, t.name
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
