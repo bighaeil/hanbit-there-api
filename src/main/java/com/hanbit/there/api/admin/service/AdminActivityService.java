@@ -17,4 +17,8 @@ public class AdminActivityService {
 	public List<Activity> getActivities(String thereId) {
 		return adminActivityRepository.findByThereIdOrderByName(thereId);
 	}
+	
+	public boolean hasActivityId(String id) {
+		return adminActivityRepository.exists(id);
+	}
 }
