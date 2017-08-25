@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hanbit.there.api.admin.reop.AdminActivityRepository;
@@ -31,6 +32,7 @@ public class AdminActivityService {
 		return adminActivityRepository.exists(id);
 	}
 	
+	@Transactional // CouchBase는 적용되지 않는다. - 지원X - 순서 상관없다면 Transactional 안먹는 것은 뒤쪽으로 
 	public void saveActivity(Activity activity, List<MultipartFile> photos) throws Exception{
 		Activity oldActivity = adminActivityRepository.findOne(activity.getId());
 		
