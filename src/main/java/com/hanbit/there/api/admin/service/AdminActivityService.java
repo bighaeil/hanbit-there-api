@@ -56,7 +56,7 @@ public class AdminActivityService {
 				String oldUrl = photoList.get(i);
 				String oldFileId = StringUtils.substringAfterLast(oldUrl, "/"); // 마지막 "/" 뒤 문자
 				
-				fileService.removeFile(oldFileId); // DB - tbl_file에 파일 제거
+				fileService.removeFile(oldFileId); // BD 및 파일 제거
 				photoList.remove(i); // %중요% - 앞에서부터 순서대로 돌고 있는 list의 필드를 지우면 index 2가 1이 된다.
 				// 해결방법 - 뒤에서 부터 지워 나간다.
 			}
