@@ -40,7 +40,7 @@ dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'
 	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-couchbase
 	compile group: 'org.springframework.data', name: 'spring-data-couchbase', version: '2.2.6.RELEASE'
-	
+	compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
 	
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-jdbc') // jdbc 추가
