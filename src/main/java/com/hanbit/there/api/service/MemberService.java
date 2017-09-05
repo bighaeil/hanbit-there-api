@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hanbit.there.api.dao.MemberDAO;
+import com.hanbit.there.api.exception.HanbitException;
 import com.hanbit.there.api.vo.MemberVO;
 
 @Service
@@ -22,7 +23,7 @@ public class MemberService {
 
 	public void signUp(MemberVO memberVO) {
 		if (memberDAO.countMember(memberVO.getEmail()) > 0) {
-			throw new RuntimeException("이미 가입된 이메일 입니다.");
+			throw new HanbitException("이미 가입된 이메일 입니다.");
 		}
 
 		memberVO.setUid(generateUid());
@@ -51,11 +52,11 @@ public class MemberService {
 		MemberVO memberVO = memberDAO.selectMember(email);
 
 		if (memberVO == null) {
-			throw new RuntimeException("가입되지 않은 이메일입니다.");
+			throw new HanbitException("가입되지 않은 이메일입니다.");
 		}
 
 		if (!passwordEncoder.matches(password, memberVO.getPassword())) {
-			throw new RuntimeException("잘못된 비밀번호입니다.");
+			throw new HanbitException("잘못된 비밀번호입니다.");
 		}
 
 		return memberVO;
