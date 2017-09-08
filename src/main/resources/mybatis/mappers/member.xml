@@ -22,6 +22,28 @@
 		  FROM tbl_member
 		 WHERE email = #{email}
 	</select>
+	
+	<resultMap id="memberDetail" type="memberVO">
+		<result property="email" column="email" />
+		<association property="detail" javaType="memberDetailVO">
+			<result property="name" column="name" />
+			<result property="phone" column="phone" />
+			<result property="info" column="info" />
+			<result property="avatar" column="avatar" />
+		</association>
+	</resultMap>
+	<!-- 나오는 결과를 mapping 해준다. (association)  -->
+	<!-- memberVO는 email -->
+	<!-- memberDetailVO는 전부 mapping -->
+	<!-- return은 memberVO로 (memberDetailVO은 memberVO의 멤버로 있으니까) -->
+
+	<select id="selectMemberDetail" parameterType="string" resultMap="memberDetail">
+		SELECT m.uid, email, name, phone, IFNULL(info, 'N') info, avatar
+		  FROM tbl_member m LEFT JOIN tbl_member_detail d
+		    ON m.uid = d.uid
+		 WHERE m.uid = #{uid}
+	</select>
+	
 </mapper>
 
 

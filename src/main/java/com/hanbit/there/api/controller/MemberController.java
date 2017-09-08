@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.WebUtils;
 
 import com.hanbit.there.api.HanbitConstants;
+import com.hanbit.there.api.annotation.SignInRequired;
 import com.hanbit.there.api.service.MemberService;
 import com.hanbit.there.api.vo.MemberVO;
 
@@ -102,6 +103,14 @@ public class MemberController {
 		result.put("status", "ok");
 		
 		return result;
+	}
+	
+	@SignInRequired
+	@RequestMapping("/detail")
+	public MemberVO getMemberDetail(HttpSession session) {
+		String uid = (String) session.getAttribute("uid");
+
+		return memberService.getMemberDetail(uid);
 	}
 
 }

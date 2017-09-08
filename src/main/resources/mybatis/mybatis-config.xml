@@ -15,6 +15,7 @@
 		<typeAlias alias="thereVO" type="com.hanbit.there.api.vo.ThereVO"/>
 		<typeAlias alias="fileVO" type="com.hanbit.there.api.vo.FileVO"/>
 		<typeAlias alias="memberVO" type="com.hanbit.there.api.vo.MemberVO"/>
+		<typeAlias alias="memberDetailVO" type="com.hanbit.there.api.vo.MemberDetailVO"/>
 		
 		<typeAlias alias="adminThereGroupVO" type="com.hanbit.there.api.admin.vo.AdminThereGroupVO"/>
 		<typeAlias alias="adminThereVO" type="com.hanbit.there.api.admin.vo.AdminThereVO"/>

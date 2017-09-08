@@ -7,6 +7,7 @@ public class MemberVO {
 	private String password;
 	private String createDt;
 	private String createdBy;
+	private MemberDetailVO detail;
 
 	public String getUid() {
 		return uid;
@@ -37,6 +38,12 @@ public class MemberVO {
 	}
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+	public MemberDetailVO getDetail() {
+		return detail;
+	}
+	public void setDetail(MemberDetailVO detail) {
+		this.detail = detail;
 	}
 
 }

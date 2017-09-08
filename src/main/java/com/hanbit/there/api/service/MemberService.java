@@ -62,6 +62,10 @@ public class MemberService {
 		return memberVO;
 	}
 
+	public MemberVO getMemberDetail(String uid) {
+		return memberDAO.selectMemberDetail(uid);
+	}
+
 }
 
 
