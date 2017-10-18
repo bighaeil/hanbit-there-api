@@ -41,10 +41,14 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-couchbase
 	compile group: 'org.springframework.data', name: 'spring-data-couchbase', version: '2.2.6.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
+	// https://mvnrepository.com/artifact/net.coobird/thumbnailator
+	compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 	
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-jdbc') // jdbc 추가
 	compile('org.springframework.boot:spring-boot-starter-aop') // AOP 추가
+	
+	
 	
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

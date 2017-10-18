@@ -27,4 +27,17 @@ public class MemberDAO {
 	public MemberVO selectMemberDetail(String uid) {
 		return sqlSession.selectOne("member.selectMemberDetail", uid);
 	}
+	
+	public int insertMemberDetail(MemberVO memberVO) {
+		return sqlSession.insert("member.insertMemberDetail", memberVO);
+	}
+
+	public String selectPassword(String uid) {
+		return sqlSession.selectOne("member.selectPassword", uid);
+	}
+
+	public int updatePassword(MemberVO memberVO) {
+		return sqlSession.update("member.updatePassword", memberVO);
+	}
+
 }

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanbit.there.api.HanbitConstants;
 import com.hanbit.there.api.annotation.SignInRequired;
 import com.hanbit.there.api.service.MemberService;
@@ -30,6 +32,8 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@PostMapping("/signup")
 	public Map signUp(@RequestParam("email") String email, @RequestParam("password") String password) {
@@ -67,7 +71,11 @@ public class MemberController {
 		session.setAttribute("signedIn", true); 
 		session.setAttribute("uid", memberVO.getUid());
 		session.setAttribute("email", memberVO.getEmail());
-
+		
+		if (memberVO.getDetail() != null) {
+			session.setAttribute("avatar", memberVO.getDetail().getAvatar());
+		}
+		
 		Map result = new HashMap();
 		result.put("email", memberVO.getEmail());
 
@@ -84,6 +92,7 @@ public class MemberController {
 		else {
 			member.put(HanbitConstants.SIGNIN_KEY, true);
 			member.put("email", session.getAttribute("email"));
+			member.put("avatar", session.getAttribute("avatar"));
 		}
 
 		return member;
@@ -113,4 +122,18 @@ public class MemberController {
 		return memberService.getMemberDetail(uid);
 	}
 
+	@SignInRequired
+	@PostMapping("/save")
+	public Map saveMemberDetail(@RequestParam("member") String json, @RequestParam("avatar") MultipartFile image, HttpSession session) throws Exception {
+		MemberVO memberVO = objectMapper.readValue(json, MemberVO.class);
+		memberVO.setUid((String) session.getAttribute("uid"));
+		
+		memberService.saveMemberDetail(memberVO, image);
+
+		Map result = new HashMap();
+		result.put("status", "ok");
+
+		return result;
+	}
+	
 }

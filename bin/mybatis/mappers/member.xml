@@ -17,14 +17,17 @@
 			(#{uid}, #{email}, #{password}, NOW(), #{createdBy})
 	</insert>
 	
-	<select id="selectMember" parameterType="string" resultType="memberVO">
-		SELECT uid, email, password, create_dt, created_by
-		  FROM tbl_member
+	<select id="selectMember" parameterType="string" resultMap="memberDetail">
+		SELECT m.uid, email, password, d.avatar
+		  FROM tbl_member m LEFT JOIN tbl_member_detail d
+		    ON m.uid = d.uid
 		 WHERE email = #{email}
 	</select>
 	
 	<resultMap id="memberDetail" type="memberVO">
+		<result property="uid" column="uid" />
 		<result property="email" column="email" />
+		<result property="password" column="password" />
 		<association property="detail" javaType="memberDetailVO">
 			<result property="name" column="name" />
 			<result property="phone" column="phone" />
@@ -43,6 +46,30 @@
 		    ON m.uid = d.uid
 		 WHERE m.uid = #{uid}
 	</select>
+	
+	<insert id="insertMemberDetail" parameterType="memberVO">
+		INSERT INTO tbl_member_detail
+			(uid, name, phone, info, avatar)
+		VALUES
+			(#{uid}, #{detail.name}, #{detail.phone}, #{detail.info}, #{detail.avatar})
+		ON DUPLICATE KEY
+		UPDATE name = #{detail.name},
+		       phone = #{detail.phone},
+		       info = #{detail.info},
+		       avatar = IFNULL(#{detail.avatar}, avatar)
+	</insert>
+
+	<select id="selectPassword" parameterType="string" resultType="string">
+		SELECT password
+		  FROM tbl_member
+		 WHERE uid = #{uid}
+	</select>
+
+	<update id="updatePassword" parameterType="memberVO">
+		UPDATE tbl_member
+		   SET password = #{password}
+		 WHERE uid = #{uid}
+	</update>
 	
 </mapper>
 
